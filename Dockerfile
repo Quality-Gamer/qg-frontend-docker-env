@@ -1,4 +1,4 @@
-# Use uma imagem oficial do PHP 7.1 com Debian Stretch
+# Use uma imagem oficial do PHP 7.1 com Debian Buster
 FROM php:7.1-buster
 
 # Atualiza o repositório de pacotes e instala as dependências necessárias
@@ -19,17 +19,15 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local
 # Define o diretório de trabalho como /var/www
 WORKDIR /var/www
 
-# Clona o repositório do projeto QG Frontend
-RUN git clone https://github.com/Quality-Gamer/qg-frontend.git .
+# Clona o repositório da aplicação Laravel 5.8 para um diretório temporário
+RUN git clone -b 5.8 https://github.com/laravel/laravel.git /tmp/laravel
 
-# Checkout para a branch específica, se necessário
-# RUN git checkout <nome-da-branch>
+# Move os arquivos do Laravel para o diretório de trabalho
+RUN mv /tmp/laravel/* /var/www \
+    && rm -rf /tmp/laravel
 
 # Instala as dependências do Composer
-RUN composer install --no-dev --optimize-autoloader
-
-# Gera uma chave de criptografia
-RUN php artisan key:generate
+RUN composer install
 
 # Define as permissões de diretório necessárias
 RUN chown -R www-data:www-data /var/www/storage /var/www/bootstrap/cache
