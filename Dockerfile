@@ -20,7 +20,7 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local
 WORKDIR /var/www
 
 # Clona o repositório da aplicação Laravel 5.8 para um diretório temporário
-RUN git clone -b 5.8 https://github.com/Quality-Gamer/qg-frontend.git /tmp/laravel
+RUN git clone https://github.com/Quality-Gamer/qg-frontend.git /tmp/laravel
 
 # Move os arquivos do Laravel para o diretório de trabalho
 RUN mv /tmp/laravel/* /var/www \
